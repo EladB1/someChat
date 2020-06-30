@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width" initial-scale="1.0">
+    <title>someChat</title>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  </head>
+  <body>
+    <div id="topBar">
+      <h3>someChat</h3>
+    </div>
+    <div id="conversation_history">
+      <!--Messages will be placed into here-->
+    </div>
+    <div id="sendBar">
+      <input type="text" id="msgContents">
+      <button id="send" onclick="sendMsg()">Send</button>
+    </div>
+    <div id="bottomBar">
+    
+    </div>
+  </body>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}"></link>
+</html>
