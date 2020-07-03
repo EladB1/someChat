@@ -1,0 +1,5 @@
+# Binary files
+__pycache__/
+
+# Virtual environment
+test-env
