@@ -29,3 +29,33 @@ async function sendMsg() {
       convo.innerHTML += `<p class="msg">${text}</p>`
   }
 }
+
+let socket = io.connect(`http://${document.domain}:${location.port}/send`);
+socket.on('connect', function(server_msg) {
+  console.log(server_msg);
+  socket.emit('send', {
+    data: 'User Connected'
+  })
+});
+
+
+socket.on('disconnect', function(server_msg) {
+  let err_ = document.getElementById('error_msg');
+  err_.innerHTML += server_msg;
+  err_.style.color = '#ff0000';
+});
+
+function sendMsg2() {
+  let msg = document.getElementById('msgContents').value;
+  socket.emit('message_event', {
+    payload: JSON.stringify({'data': msg})
+  });
+}
+
+socket.on('deliver_message', function(msg) {
+  console.log(msg['data']);
+  let convo = document.getElementById('conversation_history');
+  convo.innerHTML += `<p class="msg">${msg['data']}</p>`;
+});
+
+
