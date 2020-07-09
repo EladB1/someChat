@@ -32,6 +32,9 @@ async function sendMsg() {
 
 let socket = io.connect(`http://${document.domain}:${location.port}/send`);
 socket.on('connect', function(server_msg) {
+  let err_ = document.getElementById('error_msg');
+  if (err_.innerHTML != '')
+    err_.innerHTML = '';
   console.log(server_msg);
   socket.emit('send', {
     data: 'User Connected'
@@ -47,15 +50,26 @@ socket.on('disconnect', function(server_msg) {
 
 function sendMsg2() {
   let msg = document.getElementById('msgContents').value;
-  socket.emit('message_event', {
-    payload: JSON.stringify({'data': msg})
-  });
+  if (msg != '') {
+    socket.emit('message_event', {
+      payload: JSON.stringify({'data': msg})
+    });
+  }
 }
 
 socket.on('deliver_message', function(msg) {
   console.log(msg['data']);
   let convo = document.getElementById('conversation_history');
-  convo.innerHTML += `<p class="msg">${msg['data']}</p>`;
+  let processed_msg = msg['data'].replace('\n', '<br>');
+  convo.innerHTML += `<p class="msg">${processed_msg}</p>`;
 });
 
-
+window.onload = function() {
+  let msgbar = document.getElementById('msgContents');
+  msgbar.addEventListener('keyup', function(event) {
+    if (event.keyCode === 13 && !event.shiftKey) // enter key
+      document.getElementById('send').click();
+    if (event.keyCode === 13 && event.shiftKey) // enter + shift
+      msgbar.value += '\\n';
+  });
+};

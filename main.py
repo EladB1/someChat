@@ -25,7 +25,7 @@ def client_disconn_handler():
 
 @socketio.on('message_event', namespace='/send')
 def message_handler(message):
-  print(message);
+  #print(message);
   msg = json.loads(message['payload']);
   emit('deliver_message', {'data': escape(msg['data'])});
 

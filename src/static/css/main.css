@@ -11,4 +11,5 @@
 
 #msgContents {
   width: 93%;
+  overflow-y: scroll;
 }
