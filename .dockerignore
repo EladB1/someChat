@@ -1,0 +1,9 @@
+# Unnecessary files
+docs/
+.git/
+.gitignore
+test-env/
+vault/
+README.md
+secret_init.bash
+

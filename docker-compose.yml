@@ -1,0 +1,52 @@
+version: "3.7"
+services:
+
+  flaskapp:
+    build: .
+    image: "somechat"
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+    networks:
+      - container_network
+    secrets:
+      - APP_DB_PASSWORD
+    environment:
+      DB_INSTANCE: db_flaskapp
+      DB_USER: app_dba
+      DB_PASSWORD_FILE: run/secrets/APP_DB_PASSWORD
+    container_name: flaskapp
+
+  db:
+    image: "postgres:12.3-alpine"
+    volumes:
+      - "./pgsql_conf/postgresql.conf:/var/lib/postgresql/data/postgresql.conf"
+      - "./pgsql_conf/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf"
+      - "./init_db.bash:/docker-entrypoint-initdb.d/init_db.bash"
+    ports:
+      - "5432:5432"
+    networks:
+      - container_network
+    secrets:
+      - POSTGRES_PASSWORD
+      - APP_DB_PASSWORD
+    environment:
+      APP_DB_USER: app_dba
+      APP_DB_PASSWORD_FILE: /run/secrets/APP_DB_PASSWORD
+      POSTGRES_SUPER_USER: postgres  
+      POSTGRES_PASSWORD_FILE: /run/secrets/POSTGRES_PASSWORD
+    container_name: db_flaskapp
+
+networks:
+  container_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+secrets:
+  POSTGRES_PASSWORD:
+    file: .env/.pguser.txt
+  APP_DB_PASSWORD:
+    file: .env/.appuser.txt

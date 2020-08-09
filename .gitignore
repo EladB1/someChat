@@ -3,3 +3,8 @@ __pycache__/
 
 # Virtual environment
 test-env
+
+# Unnecessary files
+vault/
+#.testing.txt
+.env/
