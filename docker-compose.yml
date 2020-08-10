@@ -20,9 +20,11 @@ services:
 
   db:
     image: "postgres:12.3-alpine"
+    build:
+      context: .
+      dockerfile: pgsql-dockerfile
     volumes:
-      - "./pgsql_conf/postgresql.conf:/var/lib/postgresql/data/postgresql.conf"
-      - "./pgsql_conf/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf"
+      - "./pgsql_conf/data:/var/lib/postgresql/data/"
       - "./init_db.bash:/docker-entrypoint-initdb.d/init_db.bash"
     ports:
       - "5432:5432"

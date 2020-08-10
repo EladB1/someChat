@@ -34,6 +34,10 @@ function handle_file() {
   fi
 }
 
+if [[ ! -d .env ]]; then
+  mkdir .env
+fi
+
 # Super database user
 handle_file .env/.pguser.txt 16
 
