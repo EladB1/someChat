@@ -4,3 +4,4 @@ pycrypto >= 2.6.1
 Flask-SocketIO >= 4.3.0
 eventlet >= 0.25.2
 uWSGI >= 2.0.19.1
+psycopg2-binary >= 2.8.5
