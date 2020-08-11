@@ -10,6 +10,8 @@ vault/
 .env/
 
 # Postgres files
-pgsql_conf/
+!pgsql_conf/
+!pgsql_conf/data/
+pgsql_conf/data/**
 !pgsql_conf/data/postgresql.conf
 !pgsql_conf/data/pg_hba.conf
