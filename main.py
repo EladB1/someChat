@@ -31,4 +31,5 @@ def message_handler(message):
 
 
 if __name__ == '__main__':
-  socketio.run(app, '0.0.0.0', port=8000, debug=True);
+  #socketio.run(app, '0.0.0.0', port=8000, debug=True);
+  socketio.run(app);
