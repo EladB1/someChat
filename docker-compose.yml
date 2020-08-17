@@ -38,7 +38,7 @@ services:
     container_name: db_flaskapp
 
   nginx:
-    image: "nginx:stable-alpine"
+    image: "nginx:1.18.0-alpine"
     depends_on: 
       - flaskapp
     volumes:
