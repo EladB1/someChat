@@ -26,17 +26,13 @@ RUN . /opt/flaskapp/test-env/bin/activate && pip install -r requirements.txt
 USER flaskapp:flaskapp
 
 # Move over necessary files
-COPY main.py /opt/flaskapp
 COPY src /opt/flaskapp/src
-#COPY somechat.ini /opt/flaskapp
+
 COPY gunicorn.config.py /opt/flaskapp/config.py
 
 # application level logging
 RUN mkdir /opt/flaskapp/logs
 
-#CMD . /opt/flaskapp/test-env/bin/activate && python main.py
+#CMD . /opt/flaskapp/test-env/bin/activate && python src/main.py
 
-#CMD ["/opt/flaskapp/test-env/bin/uwsgi", "--ini", "/opt/flaskapp/somechat.ini"]
-
-CMD . /opt/flaskapp/test-env/bin/activate && gunicorn --preload --config python:config main:app
-
+CMD . /opt/flaskapp/test-env/bin/activate && gunicorn --preload --config python:config src.main:app
