@@ -15,7 +15,7 @@ services:
     environment:
       DB_INSTANCE: db_flaskapp
       DB_USER: app_dba
-      DB_PASSWORD_FILE: run/secrets/APP_DB_PASSWORD
+      DB_PASSWORD_FILE: /run/secrets/APP_DB_PASSWORD
     container_name: flaskapp
 
   db:
