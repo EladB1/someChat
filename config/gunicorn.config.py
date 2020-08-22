@@ -30,7 +30,9 @@ daemon = False
 # Pass environment variables to execution environment
 raw_env = []
 
-pidfile = '/opt/flaskapp/.somechat.pid'
+app_dir = '/opt/flaskapp'
+
+pidfile = f'{app_dir}/.somechat.pid'
 
 user = 'flaskapp'
 
@@ -45,10 +47,10 @@ proc_name = None
 
 ## Logs
 
-errorlog = '/opt/flaskapp/logs/error.log'
+errorlog = f'{app_dir}/logs/error.log'
 #errorlog = '-'
 loglevel = 'info'
-accesslog = '/opt/flaskapp/logs/access.log'
+accesslog = f'{app_dir}/logs/access.log'
 #accesslog = '-'
 #access_log_format = ''
 

@@ -59,6 +59,23 @@ class db_pool:
     data = curr.fetchone()
     curr.close()
     return data
+
+  def read_many(self, query, args=None, num: int=None):
+    curr = self.use_cursor(query, args)
+    if num == None:
+      data = curr.fetchall()
+    else:
+      data = curr.fetchmany(num)
+    curr.close()
+    return data
+
+  # Insert, Update, and Delete
+  def write_one(self, query, args=None):
+    pass
+  
+  # Insert, Update, and Delete; take care of multiple rows at once
+  def write_many(self):
+    pass
 '''
 # Used the block below for testing how this would work
 if __name__ == '__main__':

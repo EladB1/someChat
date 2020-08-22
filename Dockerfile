@@ -28,7 +28,7 @@ USER flaskapp:flaskapp
 # Move over necessary files
 COPY src /opt/flaskapp/src
 
-COPY gunicorn.config.py /opt/flaskapp/config.py
+COPY config/gunicorn.config.py /opt/flaskapp/config.py
 
 # application level logging
 RUN mkdir /opt/flaskapp/logs
