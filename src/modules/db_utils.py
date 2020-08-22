@@ -8,7 +8,7 @@ def get_db_cred(location: str) -> str:
     with open(location, 'r') as file_:
       data = file_.read().strip() # using .strip() to remove newline char
       if not data:
-        raise Exception('Error: \'{location}\' is empty or there was a problem retrieving the contents')
+        raise Exception(f'Error: \'{location}\' is empty or there was a problem retrieving the contents')
       return data
   except FileNotFoundError:
     print(f'File \'{location}\' could not be found.')
@@ -33,18 +33,37 @@ class db_pool:
         print(f'Database connection pool established. Min connections: {self.min_conn}, Max connections: {self.max_conn}')
     except (Exception, DatabaseError) as err:
       print(f'Database connection error: {err}')
-    finally:
-      self.conn_pool.closeall()
-      print('Database connection pool closed')
-'''
-  def use_cursor(self, other_function, *args, **kwargs):
+      self.cleanup()
+  # return a cursor object
+  def use_cursor(self, query: str, args=None):
     try:
       with self.conn_pool.getconn() as conn:
         if conn:
           print('Connected to database')
           curr = conn.cursor()
-          other_function(self, cursor=curr, *args, **kwargs)
-
+          if args != None:
+            curr.execute(query, args)
+          else:
+            curr.execute(query) # make sure the string is safely formatting against SQL Injections
+          return curr # leave the calling function responsible for getting the data and closing the cursor
     except (Exception, DatabaseError) as err:
       print(f'Database error: {err}');
+
+  def cleanup(self):
+    print('Closing database connection pool')
+    self.conn_pool.closeall()
+
+  # Get one piece of data
+  def read_one(self, query, args=None):
+    curr = self.use_cursor(query, args)
+    data = curr.fetchone()
+    curr.close()
+    return data
+'''
+# Used the block below for testing how this would work
+if __name__ == '__main__':
+  dbpool = db_pool(1, 4)
+  data = dbpool.read_one()
+  print(data)
+  dbpool.cleanup()
 '''
