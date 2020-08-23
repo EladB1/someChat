@@ -1,5 +1,5 @@
 import os
-from psycopg2 import pool, DatabaseError, sql
+from psycopg2 import pool, DatabaseError, sql, Error as pg_error
 
 # Database connector code - still need to decide how to integrate this into the app
 
@@ -34,53 +34,72 @@ class db_pool:
     except (Exception, DatabaseError) as err:
       print(f'Database connection error: {err}')
       self.cleanup()
-  # return a cursor object
-  def use_cursor(self, query: str, args=None):
+
+  # execute query and return a cursor object
+  def use_cursor(self, query: str, args=None, multi: bool=False):
     try:
       with self.conn_pool.getconn() as conn:
         if conn:
-          print('Connected to database')
+          #print('Connected to database')
           curr = conn.cursor()
-          if args != None:
+          if args != None and not multi:
             curr.execute(query, args)
-          else:
-            curr.execute(query) # make sure the string is safely formatting against SQL Injections
-          return curr # leave the calling function responsible for getting the data and closing the cursor
+          elif args != None and multi:
+            curr.executemany(query, args)
+          # For the next two conditions, make sure the string is safely formatting against SQL Injections
+          elif args == None and not multi:
+            curr.execute(query) 
+          elif args == None and multi:
+            curr.executemany(query)
+          return curr, conn # leave the calling function responsible for getting the data and closing the cursor
     except (Exception, DatabaseError) as err:
+      if conn:
+        self.conn_pool.putconn(conn)
       print(f'Database error: {err}');
 
   def cleanup(self):
     print('Closing database connection pool')
     self.conn_pool.closeall()
 
-  # Get one piece of data
-  def read_one(self, query, args=None):
-    curr = self.use_cursor(query, args)
-    data = curr.fetchone()
-    curr.close()
-    return data
-
-  def read_many(self, query, args=None, num: int=None):
-    curr = self.use_cursor(query, args)
-    if num == None:
-      data = curr.fetchall()
-    else:
-      data = curr.fetchmany(num)
-    curr.close()
-    return data
+  # Get data; multi defines whether it's one or multiple rows, num is for a certain number of rows
+  def read_data(self, query, args=None, multi: bool=False, num: int=None):
+    try:
+      curr, conn = self.use_cursor(query, args)
+      if not curr and not conn:
+        raise('Failed to get a valid connection and/or cursor')
+      if not multi:
+        data = curr.fetchone()
+      else:
+        if num == None:
+          data = curr.fetchall()
+        else:
+          data = curr.fetchmany(num)
+      curr.close()
+      self.conn_pool.putconn(conn)
+      return data
+    except (Exception, pg_error) as err:
+      print(f'Failed to read data. Error: {err}\nQuery: `{query}`')
 
   # Insert, Update, and Delete
   def write_one(self, query, args=None):
-    pass
-  
+    try:
+      curr, conn = self.use_cursor(query, args)
+      if not curr and not conn:
+        raise('Failed to get a valid connection and/or cursor')
+      conn.commit()
+      curr.close()
+      self.conn_pool.putconn(conn)
+    except (Exception, pg_error) as err:
+      print(f'Failed to write to database. Error: {err}\nQuery: `{query}`')
+
   # Insert, Update, and Delete; take care of multiple rows at once
-  def write_many(self):
-    pass
-'''
-# Used the block below for testing how this would work
-if __name__ == '__main__':
-  dbpool = db_pool(1, 4)
-  data = dbpool.read_one()
-  print(data)
-  dbpool.cleanup()
-'''
+  def write_many(self, query, args=None):
+    try:
+      curr, conn = self.use_cursor(query, args, True)
+      if not curr and not conn:
+        raise('Failed to get a valid connection and/or cursor')
+      conn.commit()
+      curr.close()
+      self.conn_pool.putconn(conn)
+    except(Exception, pg_error) as err:
+      print(f'Failed to write to multiple rows of database. Error: {err}\nQuery `{query}`')

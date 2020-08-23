@@ -20,7 +20,13 @@ class Testdb_pool(unittest.TestCase):
   def tearDown(self):
     self.conn_pool.cleanup()
 
-  def test_read_one(self):
-    user = self.conn_pool.read_one('SELECT user;')
+  def test_read_data(self):
+    user = self.conn_pool.read_data('SELECT user;')
     env_var = os.environ['DB_USER']
     self.assertEqual(env_var, user[0])
+
+  def test_write_one(self):
+    pass
+
+  def test_write_many(self):
+    pass
