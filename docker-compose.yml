@@ -22,6 +22,7 @@ services:
     image: "postgres:12.3-alpine"
     volumes:
       - "./pgsql_conf/data:/var/lib/postgresql/data/"
+      - "./pgsql_conf/schema.sql:/var/lib/postgresql/schema.sql"
       - "./init_db.bash:/docker-entrypoint-initdb.d/init_db.bash"
     ports:
       - "5432:5432"

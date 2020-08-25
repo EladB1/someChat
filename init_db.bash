@@ -31,4 +31,7 @@ psql -v ON_ERROR_STOP=1 "postgresql://postgres:${su_cred}@localhost/postgres" <<
   CREATE DATABASE somechat OWNER ${APP_DB_USER};
 EOSQL
 
-# psql -U ${APP_DB_USER} somechat -f file.sql
+# Apply the database dump
+echo 'Applying database dump'
+cat /var/lib/postgresql/schema.sql | psql -v ON_ERROR_STOP=1 "postgresql://app_dba:${app_cred}@localhost/somechat"
+echo 'Database dump applied'
