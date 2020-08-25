@@ -2,6 +2,9 @@ from flask import Blueprint, render_template, escape, request
 from flask_socketio import emit
 import json
 
+# Global import of database connector
+from ..db_settings import db_connection_pool as conn_pool
+
 # Import socketio object from ../../main.py
 from ..main import socketio
 
@@ -28,3 +31,8 @@ def message_handler(message):
   msg = json.loads(message['payload'])
   emit('deliver_message', {'data': escape(msg['data'])})
 
+# Using the function below just to test the database connector; will remove later
+@chats.route('/test')
+def test():
+  data = conn_pool.read_data('SELECT version();')[0]
+  return data
