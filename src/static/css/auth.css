@@ -1,0 +1,22 @@
+input {
+  display: block;
+  font-family: helvetica;
+}
+
+.submit_btn {
+  text-align: center;
+  border-radius: 6px;
+  border: none;
+  font-size: 22px;
+  margin-top: 16px;
+}
+
+#login_btn {
+  background-color: #2288ff;
+  color: #ffffff;
+}
+
+#register_btn {
+  background-color: #00dd56;
+  color: #ffffff;
+}

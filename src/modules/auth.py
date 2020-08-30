@@ -28,4 +28,4 @@ def signup():
 
 @auth.route('/login')
 def login():
-  pass
+  return render_template('login.html.j2')
