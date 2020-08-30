@@ -1,0 +1,20 @@
+#topBar {
+  font-family: sans-serif;
+  height: 50px;
+  text-align: center;
+}
+
+#header_text {
+  width: 120px;
+  height: 35px;
+  background-color: #147aaf;
+  color: #f9fafa;
+  margin: 0 auto;
+  position: absolute;
+  top: 0;
+  left: 0;  
+}
+
+#bottomBar {
+
+}

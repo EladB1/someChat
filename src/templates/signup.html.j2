@@ -1,0 +1,22 @@
+{% extends 'layout.html.j2' %}
+{% block javascript %}
+
+{% endblock %}
+{% block content %}
+<h4>Create account</h4>
+
+<form id=login_form action="/" method="post">
+  <label id="username_label" for="username">Username</label>
+  <input id="username_input" name="username" type="text">
+  <label id="email_label" for="email">Email</label>
+  <input id="email_input" name="email" type="text">
+  <label id="password_label" for="password">Password</label>
+  <input id="password_input" name="password" type="password">
+  <label id="confirm_password_label" for="confirm_password">Confirm password</label>
+  <input id="confirm_password_input" name="confirm_password" type="password">
+  <input id="register_btn" class="submit_btn" name="submit" value="Sign up" type="submit">
+</form>
+{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}"></link>
+{% endblock %}

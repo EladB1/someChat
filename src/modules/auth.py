@@ -24,7 +24,7 @@ def compare_pw(username: str, passwd: str) -> bool:
 
 @auth.route('/signup')
 def signup():
-  pass
+  return render_template('signup.html.j2')
 
 @auth.route('/login')
 def login():

@@ -11,5 +11,6 @@
     {% block content %}{% endblock %}
     {% include 'footer.html.j2' %}
   </body>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}"></link>
   {% block css %}{% endblock %}
 </html>
