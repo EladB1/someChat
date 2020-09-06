@@ -20,3 +20,10 @@ input {
   background-color: #00dd56;
   color: #ffffff;
 }
+
+#errorMessages {
+  color: #ff0000;
+  position: absolute;
+  right: 50px;
+  top: 50px;
+}

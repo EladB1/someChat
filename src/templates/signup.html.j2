@@ -1,21 +1,24 @@
 {% extends 'layout.html.j2' %}
 {% block javascript %}
-
+<script src="{{ url_for('static', filename='js/auth_validation.js') }}"></script>
 {% endblock %}
 {% block content %}
 <h4>Create account</h4>
 
-<form id=login_form action="/" method="post">
+<form id=login_form action="/" method="post" onsubmit="event.preventDefault(); handle_registration_submit();">
   <label id="username_label" for="username">Username</label>
-  <input id="username_input" name="username" type="text">
+  <input id="username_input" name="username" type="text" required minlength="6" maxlength="64" pattern="^([a-zA-Z][\w!\^\$]+)$" title="6 to 64 characters. Must start with upper or lower case letter. Can contain alphanumeric characters, _, ^, $, or !.">
   <label id="email_label" for="email">Email</label>
-  <input id="email_input" name="email" type="text">
+  <input id="email_input" name="email" type="email" required>
   <label id="password_label" for="password">Password</label>
-  <input id="password_input" name="password" type="password">
+  {% set special_char_regex = '\x3c\x3e~!,%@_`#=;:&\^\$\-\+\.\*\?\\\/\{\}\[\]\(\)\\x22\\x27' %}
+  {% set validation_message = 'At least 8 characters. Must contain at least one upper case letter, one lower case letter, one number, and one special character. Special characters: !, ,, ., %, $, ^, \, /, +, -, %, ;, *, ?, ( or ), { or }, [ or ], &lt; or &gt;, ~,`, \x27, ;, :, \x22' %}
+  <input id="password_input" name="password" type="password" required minlength="8" pattern="^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[0-9])(?=.*?[{{ special_char_regex }}])[\w{{ special_char_regex }}]+$" title="{{ validation_message }}">
   <label id="confirm_password_label" for="confirm_password">Confirm password</label>
-  <input id="confirm_password_input" name="confirm_password" type="password">
+  <input id="confirm_password_input" name="confirm_password" type="password" required>
   <input id="register_btn" class="submit_btn" name="submit" value="Sign up" type="submit">
 </form>
+<p id="errorMessages"></p>
 {% endblock %}
 {% block css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}"></link>
