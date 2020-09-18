@@ -5,7 +5,7 @@
 {% block content %}
 <h4>Create account</h4>
 
-<form id=login_form action="/" method="post" onsubmit="event.preventDefault(); handle_registration_submit();">
+<form id=login_form action="" method="post" onsubmit="let compr = handle_registration_submit(); if (!compr) event.preventDefault();">
   <label id="username_label" for="username">Username</label>
   <input id="username_input" name="username" type="text" required minlength="6" maxlength="64" pattern="^([a-zA-Z][\w!\^\$]+)$" title="6 to 64 characters. Must start with upper or lower case letter. Can contain alphanumeric characters, _, ^, $, or !.">
   <label id="email_label" for="email">Email</label>

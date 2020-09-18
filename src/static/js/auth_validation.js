@@ -10,4 +10,5 @@ function handle_registration_submit() {
   check = passwords_match();
   if (!check)
   	err.innerHTML += 'Passwords do not match.<br>';
+  return check;
 }
