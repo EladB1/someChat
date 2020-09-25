@@ -99,6 +99,7 @@ def login():
   if current_user.is_authenticated:
     flash('You are already logged in.')
     return redirect('/')
+  flash('Successfully logged out')
   return render_template('login.html.j2')
 
 @auth.route('/login', methods=['POST'])
