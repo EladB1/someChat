@@ -4,10 +4,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width" initial-scale="1.0">
     <title>someChat</title>
+    <script src="{{ url_for('static', filename='js/common.js') }}"></script>
     {% block javascript %}{% endblock %}
   </head>
   <body>
     {% include 'header.html.j2' %}
+    <!-- Display any messages from the backend -->
+    <div id="backend_messages">
+    {% block messages %}
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          {% for msg in messages %}
+            <p class="serverMessages">{{ msg }}</p>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+    {% endblock %}
+    </div>
     {% block content %}{% endblock %}
     {% include 'footer.html.j2' %}
   </body>

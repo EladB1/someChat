@@ -5,11 +5,11 @@
 {% block content %}
 <h4>Login</h4>
 
-<form id=login_form action="/" method="post">
+<form id=login_form action="" method="post">
   <label id="user_label" for="user">Username or Email</label>
-  <input id="user_input" name="user" type="text">
+  <input id="user_input" name="user" type="text" required>
   <label id="password_label" for="password">Password</label>
-  <input id="password_input" name="password" type="password">
+  <input id="password_input" name="password" type="password" required>
   <input id="login_btn" class="submit_btn" name="submit" value="Login" type="submit">
 </form>
 {% endblock %}
