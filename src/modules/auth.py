@@ -99,19 +99,20 @@ def login():
   if current_user.is_authenticated:
     flash('You are already logged in.')
     return redirect('/')
-  flash('Successfully logged out')
   return render_template('login.html.j2')
 
 @auth.route('/login', methods=['POST'])
 def authenticate():
   data = sanitize_input(request.form)
-  user = UserModel()
+  #user = UserModel()
   if '@' in data['user']:
     #userid = get_userid_by_email(data['user'])
-    user.lookup_by_email(data['user'])
+    #user.lookup_by_email(data['user'])
+    user = UserModel().lookup_by_email(data['user'])
   else:
     #userid = get_userid_by_username(data['user'])
-    user.lookup_by_username(data['user'])
+    #user.lookup_by_username(data['user'])
+    user = UserModel().lookup_by_username(data['user'])
   userid = user.userid
   if userid == None:
     flash('Login error: User not found.')
@@ -129,13 +130,15 @@ def authenticate():
 @login_required
 def logout():
   logout_user()
+  flash('Successfully logged out')
   return redirect('/login')
 
 @login_manager.user_loader
 def load_user(user_id):
   if user_id is not None:
-    user = UserModel()
-    user.lookup_by_userid(user_id)
+    #user = UserModel()
+    #user.lookup_by_userid(user_id)
+    user = UserModel().lookup_by_userid(user_id)
     return user
   return None
 

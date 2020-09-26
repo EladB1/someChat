@@ -13,41 +13,50 @@ class UserModel:
     self.status = None
     self.profile_photo = None
 
-# TODO: replace lookup functions below with constructor(s) that can fetch the user by email, username, or userid
+#TODO: Collapse the three lookup functions below into one function
 
-  def lookup_by_userid(self, userid):
-    self.userid = userid
+  @classmethod
+  def lookup_by_userid(cls, userid):
+    user = cls()
+    user.userid = userid
     query = 'SELECT Username, Email, status, profile_photo FROM Users WHERE UserID = %s'
     try:
-      user_details = conn_pool.read_data(query, args=[email])
-      self.username = user_details[0]
-      self.email = user_details[1]
-      self.status = user_details[2]
-      self.profile_photo = user_details[3]
+      user_details = conn_pool.read_data(query, args=[userid])
+      user.username = user_details[0]
+      user.email = user_details[1]
+      user.status = user_details[2]
+      user.profile_photo = user_details[3]
+      return user
     except Exception as err:
       print(f'Error getting user information: {err}')
 
-  def lookup_by_email(self, email):
-    self.email = email
+  @classmethod
+  def lookup_by_email(cls, email):
+    user = cls()
+    user.email = email
     query = 'SELECT UserID, Username, status, profile_photo FROM Users WHERE Email = %s'
     try:
       user_details = conn_pool.read_data(query, args=[email])
-      self.userid = user_details[0]
-      self.username = user_details[1]
-      self.status = user_details[2]
-      self.profile_photo = user_details[3]
+      user.userid = user_details[0]
+      user.username = user_details[1]
+      user.status = user_details[2]
+      user.profile_photo = user_details[3]
+      return user
     except Exception as err:
       print(f'Error getting user information: {err}')
 
-  def lookup_by_username(self, username):
-    self.username = username
+  @classmethod
+  def lookup_by_username(cls, username):
+    user = cls()
+    user.username = username
     query = 'SELECT UserID, Email, status, profile_photo FROM Users WHERE Username = %s'
     try:
       user_details = conn_pool.read_data(query, args=[username])
-      self.userid = user_details[0]
-      self.email = user_details[1]
-      self.status = user_details[2]
-      self.profile_photo = user_details[3]
+      user.userid = user_details[0]
+      user.email = user_details[1]
+      user.status = user_details[2]
+      user.profile_photo = user_details[3]
+      return user
     except Exception as err:
       print(f'Error getting user information: {err}')
   
