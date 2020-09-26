@@ -113,10 +113,10 @@ def authenticate():
     #userid = get_userid_by_username(data['user'])
     #user.lookup_by_username(data['user'])
     user = UserModel().lookup_by_username(data['user'])
-  userid = user.userid
-  if userid == None:
+  if user == None:
     flash('Login error: User not found.')
     return render_template('login.html.j2')
+  userid = user.userid
   compare = compare_pw(userid, data['password'])
   if compare:
     flash('Login successful')
