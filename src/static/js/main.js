@@ -59,9 +59,12 @@ function sendMsg2() {
 
 socket.on('deliver_message', function(msg) {
   console.log(msg['data']);
+  let msgbar = document.getElementById('msgContents');
   let convo = document.getElementById('conversation_history');
   let processed_msg = msg['data'].replace('\n', '<br>');
-  convo.innerHTML += `<p class="msg">${processed_msg}</p>`;
+  convo.innerHTML += `<div class="msg"><p class="user">${username}</p><p class="sent_msgs">${processed_msg}</p></div>`;
+  convo.scrollTop = convo.scrollHeight;
+  msgbar.value = '';
 });
 
 window.onload = function() {
@@ -69,7 +72,5 @@ window.onload = function() {
   msgbar.addEventListener('keyup', function(event) {
     if (event.keyCode === 13 && !event.shiftKey) // enter key
       document.getElementById('send').click();
-    if (event.keyCode === 13 && event.shiftKey) // enter + shift
-      msgbar.value += '\\n';
   });
 };

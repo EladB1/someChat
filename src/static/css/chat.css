@@ -9,6 +9,17 @@
   border-bottom: 1px solid #000000;
 }
 
+.user {
+  font-size: 14px;
+  font-family: monospace;
+  opacity: 0.65;
+}
+
+.sent_msgs {
+
+}
+
+
 #msgContents {
   width: 93%;
   overflow-y: scroll;

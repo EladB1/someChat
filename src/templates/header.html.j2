@@ -1,3 +1,7 @@
 <div id="topBar">
   <h3 id="header_text">someChat</h3>
+  {% if current_user.is_authenticated %}
+    <p id="username_display">Hello, {{ current_user.username }}</p>
+    <a id="logout_button" href="/logout">Logout</a>
+  {% endif %}
 </div>

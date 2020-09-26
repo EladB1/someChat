@@ -4,6 +4,18 @@
   text-align: center;
 }
 
+#logout_button {
+  width: 120px;
+  height: 25px;
+  text-decoration: none;
+  color: #f9fafa;
+  background-color: #af2147;
+  margin: 0 auto;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
 #header_text {
   width: 120px;
   height: 35px;
