@@ -18,7 +18,6 @@ chats = Blueprint('chats', __name__, template_folder='../templates', static_fold
 def home():
   return render_template('index.html.j2')
 
-# Will eventually move the socketio functions in ../../main.py here
 @socketio.on('connect', namespace='/send')
 def client_conn_handler():
   print('Connection received')
@@ -32,10 +31,4 @@ def client_disconn_handler():
 @socketio.on('message_event', namespace='/send')
 def message_handler(message):
   msg = json.loads(message['payload'])
-  emit('deliver_message', {'data': escape(msg['data'])})
-
-# Using the function below just to test the database connector; will remove later
-@chats.route('/test')
-def test():
-  data = conn_pool.read_data('SELECT version();')[0]
-  return data
+  emit('deliver_message', {'user': escape(msg['user']), 'data': escape(msg['data']), 'timestamp': escape(msg['timestamp'])})
