@@ -5,8 +5,12 @@
 #userTable, td,th {
   border: 1px solid #000000;
 }
-/*
+
 .userids {
   display: none;
 }
-*/
+
+td {
+  width: 100px;
+  height: 25px;
+}

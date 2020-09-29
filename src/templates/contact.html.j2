@@ -1,10 +1,21 @@
 {% extends 'layout.html.j2' %}
 {% block javascript %}
-
+<script>
+  let fullUserList = {{ userList }};
+</script>
+<script src="{{ url_for('static', filename='js/user_search.js') }}"></script>
 {% endblock %}
 {% block content %}
 
 <!--<p id="users">{{ userList }}</p>-->
+
+<div id="searchBar">
+  <label for="user_search_label">Username</label>
+  <input id="user_searchbar" name="user_search">
+  <button id="search" onclick="userSearch()">Search</button>
+</div>
+
+<br>
 
 <table id="userTable">
 <tr id="tableHeaders">

@@ -44,9 +44,18 @@ def get_user_list(userid):
 @chats.route('/contacts')
 @login_required
 def contact_list():
-  if not current_user.is_authenticated():
-    flash('Please login to see contact list.')
-    return redirect('/login')
   users = get_user_list(current_user.userid)
-  flash(current_user.userid)
   return render_template('contact.html.j2', userList=users)
+
+@chats.route('/contacts/<username>')    
+@login_required
+def user_search(username: str) -> tuple:
+  username = escape(username) # not trusting user input
+  if username == current_user.username:
+    return json.dumps(None)
+  query = 'SELECT UserID, Username FROM Users WHERE Username = %s';
+  try:
+    user = conn_pool.read_data(query, args=[username])
+    return json.dumps(user) #render_template('contact.html.j2', userList=[user])
+  except Exception as err:
+    print(f'User not found: {err}')
