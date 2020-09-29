@@ -32,7 +32,7 @@ socket.on('deliver_message', function(msg) {
   let msgbar = document.getElementById('msgContents');
   let convo = document.getElementById('conversation_history');
   let processed_msg = msg['data'].replace('\n', '<br>');
-  convo.innerHTML += `<div class="msg"><p class="user">${username}</p><p class="sent_msgs">${processed_msg}</p></div>`;
+  convo.innerHTML += `<div class="msg"><p class="user">${msg['user']}</p><p class="sent_msgs">${processed_msg}</p></div>`;
   convo.scrollTop = convo.scrollHeight;
   msgbar.value = '';
 });

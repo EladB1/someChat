@@ -1,0 +1,12 @@
+#userTable {
+  border-collapse: collapse;
+}
+
+#userTable, td,th {
+  border: 1px solid #000000;
+}
+/*
+.userids {
+  display: none;
+}
+*/

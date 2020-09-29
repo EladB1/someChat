@@ -1,0 +1,25 @@
+{% extends 'layout.html.j2' %}
+{% block javascript %}
+
+{% endblock %}
+{% block content %}
+
+<!--<p id="users">{{ userList }}</p>-->
+
+<table id="userTable">
+<tr id="tableHeaders">
+<th id="userid_header" class="userids">UserID</th>
+<th id="username_header" class="usernames">Username</th>
+</tr>
+{% for user in userList %}
+  <tr id="row_{{ loop.index }}" class="tableRows">
+    <td id="userid_{{ loop.index }}" class="userids">{{ user[0] }}</td>
+    <td id="username_{{ loop.index }}" class="usernames">{{ user[1] }}</td>
+  </tr>
+  <!--<p class="user"><span class="userID">{{ user[0] }}</span><span class="username">{{ user[1] }}</span></p>-->
+{% endfor %}
+</table>
+{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/contact.css') }}"></link>
+{% endblock %}

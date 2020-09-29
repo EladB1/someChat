@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, escape, request
+from flask import Blueprint, render_template, escape, request, flash, redirect
 from flask_socketio import emit
 from flask_login import login_required, current_user
 import json
@@ -31,4 +31,22 @@ def client_disconn_handler():
 @socketio.on('message_event', namespace='/send')
 def message_handler(message):
   msg = json.loads(message['payload'])
-  emit('deliver_message', {'user': escape(msg['user']), 'data': escape(msg['data']), 'timestamp': escape(msg['timestamp'])})
+  emit('deliver_message', {'user': escape(msg['user']), 'data': escape(msg['data']), 'timestamp': escape(msg['timestamp'])}, broadcast=True)
+
+def get_user_list(userid):
+  query = 'SELECT UserID, Username FROM Users WHERE UserID != %s'
+  try:
+    users = conn_pool.read_data(query, args=[userid], multi=True)
+    return users
+  except Exception as err:
+    print(f'User listing error: {err}')
+
+@chats.route('/contacts')
+@login_required
+def contact_list():
+  if not current_user.is_authenticated():
+    flash('Please login to see contact list.')
+    return redirect('/login')
+  users = get_user_list(current_user.userid)
+  flash(current_user.userid)
+  return render_template('contact.html.j2', userList=users)
