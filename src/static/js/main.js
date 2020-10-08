@@ -18,7 +18,7 @@ socket.on('disconnect', function(server_msg) {
 
 function sendMsg() {
   let msg = document.getElementById('msgContents').value;
-  if (msg != '') {
+  if (msg.trim().length) {
     let time = new Date();
     let timestamp = time.getTime();
     socket.emit('message_event', {
@@ -40,7 +40,8 @@ socket.on('deliver_message', function(msg) {
 window.onload = function() {
   let msgbar = document.getElementById('msgContents');
   msgbar.addEventListener('keyup', function(event) {
-    if (event.keyCode === 13 && !event.shiftKey) // enter key
+    if (msgbar.value.trim().length !== 0 && event.keyCode === 13 && !event.shiftKey) { // enter key
       document.getElementById('send').click();
+    }
   });
 };

@@ -1,7 +1,22 @@
-async function userSearch() {
+function getTableClone() {
+  let table = document.getElementById('userTable');
+  let tclone = table.cloneNode(true);
+  return tclone;
+}
+
+function remove_search_error() {
+  let search_res = document.getElementById('search_results');
+  if (search_res !== null)
+    search_res.remove();
+}
+
+async function userSearch(tclone) {
   let username = document.getElementById('user_searchbar').value;
+  let table = document.getElementById('userTable');
+  remove_search_error();
   if (username === '') {
-    //populate table with full user list and exit the function
+    table.replaceWith(tclone); // restore full table and exit the function
+    return;
   }
   let url = `/contacts/${username}`;
   let req = {
@@ -11,20 +26,19 @@ async function userSearch() {
     }
   };
   try {
-    let table = document.getElementById('userTable');
     let response = await fetch(url, req);
     if (!response.ok)
       throw new Error(`Request failed. HTTP Status: ${response.status}`);
     else {
       let response_content = await response.json();
       let json = response_content;
-      if (json == null) {
-        table.remove();
-        document.body.innerHTML += '<p id="search_results">User not found</p>';
+      if (json === null) {
+        table.replaceWith(tclone);
+        document.body.innerHTML += '<p id="search_results" style="color: #ff0000;">User not found</p>';
+        return;
       }
-      
       clearTable();
-      let results = `<td id="userid_0" class="userids">${json[0]}</td><tr id="username_0" class="usernames">${json[1]}</td>`;
+      let results = `<td id="userid_0" class="userids">${json[0]}</td><td id="username_0" class="usernames">${json[1]}</td>`;
       insertRowIntoTable(results);
     }
   }
