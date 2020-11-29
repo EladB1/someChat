@@ -1,18 +1,25 @@
 #userTable {
   border-collapse: collapse;
+  order: 2;
+  margin-top: 25px;
 }
 
-#userTable, td,th {
-  border: 1px solid #000000;
+#roomTable {
+  order: 4;
+  border-collapse: collapse;
 }
-
 .userids {
   display: none;
 }
 
-td {
+.roomids {
+  display: none;
+}
+
+td, th {
   width: 100px;
   height: 25px;
+  border: 1px solid #000000;
 }
 
 #search_container {
@@ -24,7 +31,16 @@ td {
   order: 1;
 }
 
-#userTable {
-  order: 2;
-  margin-top: 25px;
+hr {
+  opacity: 0.25;
+}
+
+#room_header {
+  margin: 0 auto;
+  text-align: center;
+}
+
+#search_results {
+  order: 3;
+  color: #ff0000;
 }

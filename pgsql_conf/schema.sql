@@ -15,8 +15,10 @@ CREATE TABLE messages (
   time_sent timestamp NOT NULL,
   senderID INT NOT NULL,
   recipientID INT NOT NULL,
+  roomID INT NOT NULL,
   CONSTRAINT fk_senderID FOREIGN KEY(senderID) REFERENCES Users(UserID) ON DELETE CASCADE,
-  CONSTRAINT fk_recipientID FOREIGN KEY(recipientID) REFERENCES Users(UserID) ON DELETE CASCADE
+  CONSTRAINT fk_recipientID FOREIGN KEY(recipientID) REFERENCES Users(UserID) ON DELETE CASCADE,
+  CONSTRAINT fk_roomID FOREIGN KEY(roomID) REFERENCES rooms(roomID) ON DELETE CASCADE
 );
 
 CREATE INDEX indx_contents ON messages(msg_content);
@@ -24,7 +26,7 @@ CREATE INDEX indx_contents ON messages(msg_content);
 
 CREATE TABLE rooms (
   roomID SERIAL PRIMARY KEY,
-  name TEXT NOT NULL,
+  name TEXT UNIQUE NOT NULL,
   description TEXT
 );
 

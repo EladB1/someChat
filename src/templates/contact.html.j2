@@ -13,21 +13,51 @@
   <tr id="tableHeaders">
   <th id="userid_header" class="userids">UserID</th>
   <th id="username_header" class="usernames">Username</th>
+  <th id="chat_header" class="chat_links">Start Chat</th>
   </tr>
-  {% for user in userList %}
-    <tr id="row_{{ loop.index }}" class="tableRows">
-      <td id="userid_{{ loop.index }}" class="userids">{{ user[0] }}</td>
-      <td id="username_{{ loop.index }}" class="usernames">{{ user[1] }}</td>
-    </tr>
-  {% endfor %}
+  {% if userList is not none %}
+    {% for user in userList %}
+      <tr id="row_{{ loop.index }}" class="tableRows">
+        <td id="userid_{{ loop.index }}" class="userids">{{ user[0] }}</td>
+        <td id="username_{{ loop.index }}" class="usernames">{{ user[1] }}</td>
+        <td id="start_chat_{{ loop.index }}" class="chat_links"><a id="chat_link_{{ loop.index }}" class="chat_links" href="/chat/user?userid={{ user[0] }}&username={{ user[1] }}">Chat</a></td>
+      </tr>
+    {% endfor %}
+  {% endif %}
   </table>
   <!-- Need the javascript tag below to declare a global variable. This will  keep an original copy of the users table. -->
   <script>let tclone = getTableClone();</script>
   <div id="searchBar">
     <label for="user_search_label">Username</label>
     <input id="user_searchbar" name="user_search">
-    <button id="search" onclick="userSearch(tclone);">Search</button>
+    <button id="search" onclick="userSearch();">Search</button>
   </div>
+</div>
+<div id="room_membership">
+  <hr>
+  <h4 id="room_header">Your chatrooms</h4>
+  <table id="roomTable">
+    <tr id="room_tableHeaders">
+    <th id="roomid_header" class="roomids">RoomID</th>
+    <th id="roomname_header" class="roomnames">Room name</th>
+    <th id="description_header" class="descriptions">Description</th>
+    {% if roomList is not none %}
+      {% for room in roomList %}
+        <tr id="room_row_{{ loop.index }}" class="tableRows">
+          <td id="roomid_{{ loop.index }}" class="roomids">{{ room[0] }}</td>
+          <td id="roomname_{{ loop.index }}" class="roomnames">{{ room[1] }}</td>
+          <td id="description_{{ loop.index }}" class="descriptions">{{ room[2] }}</td>
+        </tr>
+      {% endfor %}
+    {% else %}
+      <tr id="room_row_0" class="tableRows">
+        <td id="roomid_0" class="roomids"></td>
+        <td id="roomname_0" class="roomnames"></td>
+        <td id="description_0" class="descriptions"></td>
+      </tr>
+      <p id="default_message">Start a chat with another user or create/join a chatroom</p>
+    {% endif %}
+  </table>
 </div>
 {% endblock %}
 {% block css %}

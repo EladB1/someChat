@@ -1,66 +1,39 @@
-function getTableClone() {
-  let table = document.getElementById('userTable');
-  let tclone = table.cloneNode(true);
-  return tclone;
-}
-
 function remove_search_error() {
   let search_res = document.getElementById('search_results');
   if (search_res !== null)
     search_res.remove();
 }
 
-async function userSearch(tclone) {
+function userSearch() {
   let username = document.getElementById('user_searchbar').value;
   let table = document.getElementById('userTable');
-  remove_search_error();
   if (username === '') {
-    table.replaceWith(tclone); // restore full table and exit the function
+    refreshTable(); // restore full table and exit the function
+    remove_search_error();
     return;
   }
-  let url = `/contacts/${username}`;
-  let req = {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    }
-  };
-  try {
-    let response = await fetch(url, req);
-    if (!response.ok)
-      throw new Error(`Request failed. HTTP Status: ${response.status}`);
+  let rows = table.getElementsByTagName('tr');
+  let rowFound = false;
+  let i;
+  for (i = 1; i < rows.length; i++) { // don't want to change the headers
+    if (rows[i].getElementsByClassName('usernames')[0].innerHTML !== username)
+      rows[i].style.display = 'none';
     else {
-      let response_content = await response.json();
-      let json = response_content;
-      if (json === null) {
-        table.replaceWith(tclone);
-        document.body.innerHTML += '<p id="search_results" style="color: #ff0000;">User not found</p>';
-        return;
-      }
-      clearTable();
-      let results = `<td id="userid_0" class="userids">${json[0]}</td><td id="username_0" class="usernames">${json[1]}</td>`;
-      insertRowIntoTable(results);
+      rowFound = true;
+      rows[i].style.display = '';
     }
   }
-  catch (exception) {
-    console.error(exception);
+  if (!rowFound) {
+    refreshTable();
+    document.getElementById('search_container').innerHTML += '<p id="search_results" style="color: #ff0000;">User not found</p>';
   }
 }
 
-function clearTable() {
+function refreshTable() {
   let table = document.getElementById('userTable');
   let rows = table.getElementsByTagName('tr');
-  let len = rows.length;
-  for(i = len-1; i > 0; i--) {
-    table.deleteRow(i);
+  let i;
+  for (i = 1; i < rows.length; i++) { // every row except for the header row
+    rows[i].style.display = '';
   }
-}
-
-function insertRowIntoTable(row) {
-  let table = document.getElementById('userTable');
-  let tableRef = table.getElementsByTagName('tbody')[0];
-  let new_row = tableRef.insertRow(tableRef.rows.length);
-  new_row.id = 'row_0';
-  new_row.class = 'tableRows';
-  new_row.innerHTML = row;
 }
