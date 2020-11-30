@@ -34,7 +34,7 @@ def message_handler(message):
   emit('deliver_message', {'user': escape(msg['user']), 'data': escape(msg['data']), 'timestamp': escape(msg['timestamp'])}, broadcast=True)
 
 def get_user_list(userid):
-  query = 'SELECT UserID, Username FROM Users WHERE UserID != %s'
+  query = 'SELECT UserID, Username FROM Users WHERE UserID != %s ORDER BY Username' # get the sorted version for more efficient searches
   try:
     users = conn_pool.read_data(query, args=[userid], multi=True)
     return users
