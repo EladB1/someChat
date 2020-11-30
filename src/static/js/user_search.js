@@ -10,9 +10,9 @@ function remove_search_error() {
 function userSearch() {
   let username = document.getElementById('user_searchbar').value;
   let table = document.getElementById('userTable');
+  remove_search_error(); // don't want this showing up twice
   if (username === '') {
     refreshTable(); // restore full table and exit the function
-    remove_search_error();
     return;
   }
   let rows = table.getElementsByTagName('tr');
@@ -34,9 +34,9 @@ function userSearch() {
 
 function binarySearch_rows(arr, left, right, find) {
   let middle = (left + right) / 2;
+  let middle_elem = arr[middle].getElementsByClassName('usernames')[0].innerHTML
   if (left > right)
     return -1; // nothing found; base case
-  let middle_elem = arr[middle].getElementsByClassName('usernames')[0].innerHTML
   else if (find.localeCompare(middle_elem) === 1) // greater than
     return binarySearch(arr, middle+1, right, find);
   else if  (find.localeCompare(middle_elem) === -1) // less than

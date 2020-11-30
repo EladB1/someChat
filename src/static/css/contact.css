@@ -44,3 +44,8 @@ hr {
   order: 3;
   color: #ff0000;
 }
+
+.description {
+  width: 200px;
+  height: 75px;
+}
